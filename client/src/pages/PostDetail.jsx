@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import API from '../api/axios';
+import { useAuth } from '../context/AuthContext';
 
 function PostDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [post, setPost]       = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -38,18 +40,25 @@ function PostDetail() {
       </p>
       <p className="text-gray-700 leading-relaxed mb-8">{post.content}</p>
       <div className="flex gap-4">
-        <Link
-          to={`/edit/${post._id}`}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
-        >
-          Edit Post
-        </Link>
-        <button
-          onClick={handleDelete}
-          className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-600"
-        >
-          Delete Post
-        </button>
+
+        {/* Only show Edit and Delete if user is logged in */}
+        {user && (
+          <>
+            <Link
+              to={`/edit/${post._id}`}
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-blue-700"
+            >
+              Edit Post
+            </Link>
+            <button
+              onClick={handleDelete}
+              className="bg-red-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-600"
+            >
+              Delete Post
+            </button>
+          </>
+        )}
+
         <Link to="/" className="text-gray-400 text-sm self-center hover:underline">
           ← Back to Home
         </Link>

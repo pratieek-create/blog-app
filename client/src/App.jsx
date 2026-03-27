@@ -6,6 +6,7 @@ import CreatePost from './pages/CreatePost';
 import EditPost from './pages/EditPost';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import PrivateRoute from './components/PrivateRoute';
 
 function App() {
   return (
@@ -13,12 +14,18 @@ function App() {
       <Navbar />
       <main className="max-w-4xl mx-auto px-4 py-8">
         <Routes>
-          <Route path="/"           element={<Home />} />
-          <Route path="/posts/:id"  element={<PostDetail />} />
-          <Route path="/create"     element={<CreatePost />} />
-          <Route path="/edit/:id"   element={<EditPost />} />
-          <Route path="/login"      element={<Login />} />
-          <Route path="/register"   element={<Register />} />
+          <Route path="/"          element={<Home />} />
+          <Route path="/posts/:id" element={<PostDetail />} />
+          <Route path="/login"     element={<Login />} />
+          <Route path="/register"  element={<Register />} />
+
+          {/* Protected routes — must be logged in */}
+          <Route path="/create" element={
+            <PrivateRoute><CreatePost /></PrivateRoute>
+          }/>
+          <Route path="/edit/:id" element={
+            <PrivateRoute><EditPost /></PrivateRoute>
+          }/>
         </Routes>
       </main>
     </BrowserRouter>
